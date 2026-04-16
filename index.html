@@ -1,107 +1,131 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل مريض - Dental Smile</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dental Smile - نظام إدارة مرضى الأسنان</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-blue: #1A73E8;
+            --deep-blue: #0D47A1;
+            --dark-bg: #000000;
+            --accent-pink: #F48FB1;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        /* تنسيقات عامة لتجنب مشاكل الموبايل */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; width: 100%; }
+
+        /* نافبار مرن للموبايل */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 0.8rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border); z-index: 1000;
+        }
+        .nav-logo img { height: 40px; border-radius: 8px; }
+        .nav-links { display: flex; gap: 1.2rem; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; cursor: pointer; }
+
+        /* الأزرار */
+        .btn { padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 600; text-decoration: none; transition: 0.3s; cursor: pointer; border: none; display: inline-block; text-align: center; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue)); color: #fff; width: 100%; }
+        .btn-secondary { background: var(--glass-bg); color: #fff; border: 1px solid var(--glass-border); width: 100%; }
+
+        /* الأقسام */
+        .page-section { display: none; width: 100%; }
+        .active-page { display: block; }
+
+        /* الهيرو للموبايل */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 1.5rem 2rem; text-align: center; }
+        .hero-content h1 { font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-content p { font-size: 1.1rem; color: #ccc; margin-bottom: 2rem; }
+
+        /* فورم التسجيل للموبايل */
+        .form-container { width: 100%; padding: 6rem 1rem 2rem; }
+        .form-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem; }
+        .form-card h1 { font-size: 1.8rem; text-align: center; margin-bottom: 1.5rem; color: var(--accent-pink); }
+        
+        .form-group { margin-bottom: 1.2rem; text-align: right; }
+        .form-group label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; color: #bbb; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem; }
+
+        /* المجسم 3D */
+        .model-viewer-section { margin: 1.5rem 0; background: rgba(26,115,232,0.1); border-radius: 20px; padding: 10px; }
+        model-viewer { width: 100%; height: 280px; border-radius: 15px; }
+
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-item { background: rgba(255,255,255,0.05); padding: 0.6rem; border-radius: 10px; border: 1px solid var(--glass-border); font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
+
+        footer { text-align: center; padding: 1.5rem; color: #555; font-size: 0.8rem; }
+    </style>
 </head>
 <body>
+
     <nav>
-        <div class="nav-logo">
-            <img src="assets/images/3.jpg" alt="Dental Smile Logo">
-        </div>
+        <div class="nav-logo"><img src="3.jpg" alt="Logo"></div>
         <ul class="nav-links">
-            <li><a href="index.html">الرئيسية</a></li>
+            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="showPage('registerPage')">تسجيل</a></li>
         </ul>
     </nav>
 
-    <div class="form-container">
-        <div class="form-card">
-            <h1>تسجيل بيانات المريض</h1>
-            
-            <section class="model-viewer-section" id="modelSection">
-                <h3>حدد موقع الألم على مجسم الأسنان</h3>
-                <model-viewer 
-                    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-                    alt="مجسم ثلاثي الأبعاد للفكين"
-                    auto-rotate
-                    camera-controls
-                    shadow-intensity="1"
-                    ar
-                ></model-viewer>
-            </section>
+    <div id="homePage" class="page-section active-page">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Dental Smile</h1>
+                <p>ربط طلاب الأسنان بالمرضى بكل سهولة</p>
+                <button onclick="showPage('registerPage')" class="btn btn-primary">ابدأ الآن / حجز موعد</button>
+            </div>
+        </section>
+    </div>
 
-            <form id="patientForm">
-                <div class="form-group">
-                    <label for="fullName">الاسم الكامل</label>
-                    <input type="text" id="fullName" name="fullName" required>
+    <div id="registerPage" class="page-section">
+        <div class="form-container">
+            <div class="form-card">
+                <h1>تسجيل مريض</h1>
+                <div class="model-viewer-section">
+                    <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" auto-rotate camera-controls></model-viewer>
                 </div>
-
-                <div class="form-group">
-                    <label for="address">العنوان</label>
-                    <input type="text" id="address" name="address" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="age">العمر</label>
-                    <input type="number" id="age" name="age" min="1" max="120" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="dob">تاريخ الميلاد</label>
-                    <input type="date" id="dob" name="dob" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">رقم الهاتف / واتساب</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-
-                <div class="form-group">
-                    <label>التاريخ الطبي</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="medical" value="diabetes">
-                            مرض السكري
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="medical" value="bloodPressure">
-                            ضغط الدم
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="medical" value="heart">
-                            أمراض القلب
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="medical" value="allergies">
-                            حساسية
-                        </label>
+                <form id="patientForm">
+                    <div class="form-group"><label>الاسم الكامل</label><input type="text" required></div>
+                    <div class="form-group"><label>العنوان</label><input type="text" required></div>
+                    <div class="form-group"><label>العمر</label><input type="number" required></div>
+                    <div class="form-group"><label>رقم التواصل</label><input type="tel" required></div>
+                    <div class="form-group">
+                        <label>التاريخ الطبي</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item"><input type="checkbox"> سكري</label>
+                            <label class="checkbox-item"><input type="checkbox"> ضغط</label>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="painDescription">وصف الألم</label>
-                    <textarea id="painDescription" name="painDescription" rows="4" placeholder="أرجو وصف الألم والمشكلة بالتفصيل..." required></textarea>
-                </div>
-
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary">إرسال البيانات</button>
-                    <a href="index.html" class="btn btn-secondary">العودة للرئيسية</a>
-                </div>
-            </form>
+                    <div class="form-group"><label>وصف الحالة</label><textarea rows="3"></textarea></div>
+                    <button type="submit" class="btn btn-primary">إرسال</button>
+                    <button type="button" onclick="showPage('homePage')" class="btn btn-secondary" style="margin-top:10px">إلغاء</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Dental Smile. جميع الحقوق محفوظة.</p>
-    </footer>
-
-    <script src="js/script.js"></script>
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            window.scrollTo(0,0);
+        }
+        document.getElementById('patientForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert('تم الإرسال بنجاح!');
+            showPage('homePage');
+        };
+    </script>
 </body>
 </html>
