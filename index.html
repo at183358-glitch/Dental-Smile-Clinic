@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dental Smile - ربط طلاب طب الأسنان بالمرضى</title>
+    <title>Dental Smile - نظام إدارة مرضى الأسنان</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     
     <style>
-        /* كود التنسيق CSS مدمج */
+        /* المتغيرات الأساسية */
         :root {
             --primary-blue: #1A73E8;
             --deep-blue: #0D47A1;
@@ -22,46 +23,55 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
 
+        /* التنسيقات المشتركة */
         nav {
             position: fixed; top: 0; width: 100%; padding: 1rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
             background: var(--glass-bg); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border); z-index: 1000;
         }
-
         .nav-logo img { height: 50px; border-radius: 12px; }
-
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--accent-pink); }
+
+        /* الأزرار */
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: 0.3s; cursor: pointer; border: none; display: inline-block; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue)); color: #fff; box-shadow: 0 10px 30px rgba(26, 115, 232, 0.4); }
+        .btn-secondary { background: var(--glass-bg); color: #fff; border: 2px solid var(--glass-border); }
+
+        /* أقسام الصفحة الرئيسية */
+        .page-section { display: none; }
+        .active-page { display: block; }
 
         .hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 8rem 2rem 4rem; text-align: center;
             background: linear-gradient(135deg, var(--dark-bg) 0%, #0a0a0a 100%);
         }
-
         .hero-content h1 {
             font-size: 4rem; margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
         .hero-content p { font-size: 1.25rem; margin-bottom: 2.5rem; color: #ccc; max-width: 700px; margin-inline: auto; }
-
-        .hero-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
-
-        .btn { padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: 0.3s; cursor: pointer; border: none; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue)); color: #fff; box-shadow: 0 10px 30px rgba(26, 115, 232, 0.4); }
-        .btn-secondary { background: var(--glass-bg); color: #fff; border: 2px solid var(--glass-border); }
-
         .features { padding: 6rem 2rem; background: #050505; }
         .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; }
-
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .feature-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; transition: 0.3s; text-align: center; }
+        .feature-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; text-align: center; transition: 0.3s; }
         .feature-card:hover { transform: translateY(-10px); border-color: var(--accent-pink); }
-        .feature-card h3 { color: var(--accent-pink); margin-bottom: 1rem; }
+
+        /* تنسيق صفحة التسجيل (الستايل الأخير) */
+        .form-container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .form-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 3rem; backdrop-filter: blur(20px); }
+        .form-card h1 { text-align: center; margin-bottom: 2rem; background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #ccc; }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 2px solid var(--glass-border); border-radius: 16px; background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .model-viewer-section { margin: 2rem 0; padding: 1rem; background: rgba(26, 115, 232, 0.1); border: 2px solid var(--primary-blue); border-radius: 24px; text-align: center; }
+        model-viewer { width: 100%; height: 350px; background: #111; border-radius: 20px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-item { background: rgba(255,255,255,0.05); padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--glass-border); cursor: pointer; }
 
         footer { text-align: center; padding: 2rem; color: #666; border-top: 1px solid var(--glass-border); }
 
@@ -69,67 +79,103 @@
     </style>
 </head>
 <body>
+
     <nav>
         <div class="nav-logo">
             <img src="3.jpg" alt="Dental Smile Logo">
         </div>
         <ul class="nav-links">
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#features">المميزات</a></li>
-            <li><a href="register.html">تسجيل مريض</a></li>
+            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="showPage('registerPage')">تسجيل مريض</a></li>
         </ul>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Dental Smile</h1>
-            <p>نظام متكامل يربط طلاب طب الأسنان بالمرضى، يوفر رعاية طبية مميزة وتجربة مريحة للجميع</p>
-            <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">تحميل التطبيق APK</a>
-                <a href="register.html" class="btn btn-secondary">احجز موعد / تسجيل مريض</a>
+    <div id="homePage" class="page-section active-page">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Dental Smile</h1>
+                <p>نظام متكامل يربط طلاب طب الأسنان بالمرضى، يوفر رعاية طبية مميزة وتجربة مريحة للجميع</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">تحميل التطبيق APK</a>
+                    <a onclick="showPage('registerPage')" class="btn btn-secondary">احجز موعد / تسجيل مريض</a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="features" id="features">
-        <h2>مميزات التطبيق</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <h3>🔗 مطابقة ذكية</h3>
-                <p>محرك مطابقة ذكي يربط الطلاب بالمرضى بناءً على نوع الحالة والموقع</p>
+        <section class="features" id="features">
+            <h2>مميزات التطبيق</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🔗 مطابقة ذكية</h3>
+                    <p>محرك مطابقة ذكي يربط الطلاب بالمرضى بناءً على نوع الحالة والموقع</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📱 لوحة تحكم كاملة</h3>
+                    <p>6 وحدات متكاملة لطلاب طب الأسنان لإدارة العيادة بسهولة</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🦷 مجسم 3D</h3>
+                    <p>مجسم ثلاثي الأبعاد للفكين لتحديد موقع الألم بدقة</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <h3>📱 لوحة تحكم كاملة</h3>
-                <p>6 وحدات متكاملة لطلاب طب الأسنان لإدارة العيادة بسهولة</p>
-            </div>
-            <div class="feature-card">
-                <h3>🦷 مجسم 3D</h3>
-                <p>مجسم ثلاثي الأبعاد للفكين لتحديد موقع الألم بدقة</p>
+        </section>
+    </div>
+
+    <div id="registerPage" class="page-section">
+        <div class="form-container">
+            <div class="form-card">
+                <h1>تسجيل بيانات المريض</h1>
+                
+                <section class="model-viewer-section">
+                    <p style="margin-bottom: 10px;">حدد موقع الألم على مجسم الأسنان</p>
+                    <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" auto-rotate camera-controls></model-viewer>
+                </section>
+
+                <form id="patientForm">
+                    <div class="form-group"><label>الاسم الكامل</label><input type="text" required></div>
+                    <div class="form-group"><label>رقم الهاتف</label><input type="tel" required></div>
+                    <div class="form-group">
+                        <label>التاريخ الطبي</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item"><input type="checkbox"> سكري</label>
+                            <label class="checkbox-item"><input type="checkbox"> ضغط</label>
+                            <label class="checkbox-item"><input type="checkbox"> حساسية</label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>وصف الألم</label><textarea rows="4" placeholder="اشرح لنا الحالة..."></textarea></div>
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">إرسال البيانات</button>
+                        <button type="button" onclick="showPage('homePage')" class="btn btn-secondary">إلغاء</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
 
     <footer>
         <p>&copy; 2026 Dental Smile. جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
-        /* كود البرمجة JS مدمج */
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
+        // وظيفة التنقل بين الصفحات بدون تحميل
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            window.scrollTo(0,0);
+        }
+
+        // معالجة النموذج
+        document.getElementById('patientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('تم إرسال بياناتك بنجاح! سنتواصل معك قريباً.');
+            showPage('homePage');
         });
 
+        // تأثير الهيدر عند التمرير
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.background = 'rgba(0, 0, 0, 0.95)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.08)';
-            }
+            if (window.scrollY > 50) { nav.style.background = 'rgba(0, 0, 0, 0.95)'; }
+            else { nav.style.background = 'rgba(255, 255, 255, 0.08)'; }
         });
     </script>
 </body>
