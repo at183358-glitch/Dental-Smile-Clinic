@@ -4,15 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dental Smile - ربط طلاب طب الأسنان بالمرضى</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* كود التنسيق CSS مدمج */
+        :root {
+            --primary-blue: #1A73E8;
+            --deep-blue: #0D47A1;
+            --dark-bg: #000000;
+            --accent-pink: #F48FB1;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
+
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border); z-index: 1000;
+        }
+
+        .nav-logo img { height: 50px; border-radius: 12px; }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent-pink); }
+
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 8rem 2rem 4rem; text-align: center;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0a0a0a 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 4rem; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p { font-size: 1.25rem; margin-bottom: 2.5rem; color: #ccc; max-width: 700px; margin-inline: auto; }
+
+        .hero-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: 0.3s; cursor: pointer; border: none; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue)); color: #fff; box-shadow: 0 10px 30px rgba(26, 115, 232, 0.4); }
+        .btn-secondary { background: var(--glass-bg); color: #fff; border: 2px solid var(--glass-border); }
+
+        .features { padding: 6rem 2rem; background: #050505; }
+        .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .feature-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; transition: 0.3s; text-align: center; }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--accent-pink); }
+        .feature-card h3 { color: var(--accent-pink); margin-bottom: 1rem; }
+
+        footer { text-align: center; padding: 2rem; color: #666; border-top: 1px solid var(--glass-border); }
+
+        @media (max-width: 768px) { .hero-content h1 { font-size: 2.5rem; } .nav-links { display: none; } }
+    </style>
 </head>
 <body>
     <nav>
         <div class="nav-logo">
-            <img src="assets/images/3.jpg" alt="Dental Smile Logo">
+            <img src="3.jpg" alt="Dental Smile Logo">
         </div>
         <ul class="nav-links">
             <li><a href="#home">الرئيسية</a></li>
@@ -54,6 +113,24 @@
         <p>&copy; 2026 Dental Smile. جميع الحقوق محفوظة.</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script>
+        /* كود البرمجة JS مدمج */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.08)';
+            }
+        });
+    </script>
 </body>
 </html>
